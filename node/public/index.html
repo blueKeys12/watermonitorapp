@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html ng-app="hostApp">
+<head>
+<meta charset=utf-8>
+<title>Water Quality Monitor</title>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-route.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script>!window.jQuery && document.write('<script src="jquery-1.4.1.min.js"><\/script>')</script>
+<script src="/app/App.js"></script>
+<script src="jquery.raptorize.1.0.js"></script>
+<script type="text/javascript">
+		$(window).load(function() {
+			$('.button').raptorize({
+				'enterOn' : 'click'
+			});
+		});
+</script>
+<script src="/app/socket.io.js"></script>
+<script>
+	var socket = io();
+	socket.on('liveStream', function(url){
+		$('#stream').attr('src', url);
+		$('.start').hide();
+	});
+	function startStream(){
+		socket.emit('start-stream');
+		$('.start').hide();
+	}
+	socket.emit('home');
+</script>
+</head>
+
+<header>
+	<nav class="navbar navbar-default">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">Water Quality Monitor</a>
+		</div>
+		<div class="nav navbar-nav navbar-right pull-right">
+			<a href="#"> Home <i class="fa fa-home" style="padding-right: 5px"></i></a>
+			<a href="#/video"> Video <i class="fa fa-video-camera" style="padding-right: 5px"></i></a>
+			<a href="#/settings"> Settings <i class="fa fa-cogs" style="padding-right: 5px"></i></a>
+			<a href="#" class="button"> Raptor <i class="fa fa-hand-lizard-o" style="padding-right: 5px"></i></a>
+		</div>
+	</div>
+	</nav>
+</header>
+<body ng-controller="mainController">
+	<!-- MAIN CONTENT -->
+	<div id="main">
+		<div ng-view></div>
+	</div>
+</body>
+</html>
